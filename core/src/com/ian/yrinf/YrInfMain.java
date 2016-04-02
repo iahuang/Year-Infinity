@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class YrInfMain extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture img;
+	int year = -1000;
 	
 	@Override
 	public void create () {
