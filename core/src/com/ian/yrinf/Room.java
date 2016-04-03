@@ -9,32 +9,25 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class Room {
-	ArrayList<Tile> tiles;
+	ArrayList<Tile> tiles = new ArrayList<Tile>();
 	Music bgmus;
-	Viewport viewport;
-	OrthographicCamera camera;
 	int bx;
 	int by;
 	SpriteBatch batch;
 	
-	public void Room(ArrayList<Tile> itiles, Music ibgmus, int ibx, int iby) {
-		tiles = itiles;
-		bgmus = ibgmus;
+	
+	public Room(int ibx, int iby) {
 		bx = ibx;
 		by = iby;
-		camera = new OrthographicCamera();
-		viewport = new FitViewport(bx, by, camera);
 		batch = new SpriteBatch();
 		
 	}
-	public void draw() {
-		batch.begin();
+	public void draw(SpriteBatch batch) {
 		for (Tile t : tiles) {
 			t.update();
 			t.draw(batch);
 			
 		}
-		batch.end();
 	}
 	
 	

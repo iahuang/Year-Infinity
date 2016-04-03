@@ -10,11 +10,12 @@ public class YrInfMain extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture img;
 	int year = -1000;
-	
+	Editor editor;
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
 		img = new Texture("badlogic.jpg");
+		editor = new Editor();
 	}
 
 	@Override
@@ -23,6 +24,7 @@ public class YrInfMain extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
 		batch.draw(img, 0, 0);
+		editor.update(batch);
 		batch.end();
 	}
 }
