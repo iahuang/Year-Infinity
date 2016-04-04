@@ -21,6 +21,9 @@ public class Room {
 	float r;
 	float g;
 	float b;
+	
+	int winx = 800;
+	int winy = 600;
 
 	public Room() {
 		batch = new SpriteBatch();
@@ -62,11 +65,16 @@ public class Room {
 	public void draw(SpriteBatch batch) {
 		Gdx.gl.glClearColor(r, g, b, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		for (Tile t : tiles) {
-			t.update();
-			t.draw(batch);
-			
+		for (int y=winy;y>0;y-=2) {
+			for (Tile t : tiles) {
+				if ((int) t.y-t.y%2 == y) {
+					t.update();
+					t.draw(batch);
+				}
+				
+			}
 		}
+		
 	}
 	
 	

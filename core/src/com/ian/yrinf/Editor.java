@@ -8,13 +8,14 @@ import org.json.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 public class Editor {
 	ArrayList<Tile> tiles = new ArrayList<Tile>();
-	Room room = new Room();
+	Room room = new Room(0);
 	JSONObject jobj = new JSONObject();
 	String load = "";
 	float rot = 0;
@@ -24,6 +25,8 @@ public class Editor {
 	boolean showGrid = true;
 	int winx = 800;
 	int winy = 600;
+	Texture origin = new Texture("editor/origin.png");
+	Texture gridLines = new Texture("editor/grid.png");
 	
 	public static int addNumber(int x, int y) {
 		if (x == 0) {
@@ -36,8 +39,8 @@ public class Editor {
 		 char[] escapedQuote=new char[]{'\\' , '"'};
 		 return myString.replace(new String(quote), new String(escapedQuote));
 	}
-	public void update(SpriteBatch batch,ShapeRenderer sr) {
 
+	public void update(SpriteBatch batch,ShapeRenderer sr) {
 		float mx = Gdx.input.getX();
 		float my = winy-Gdx.input.getY();
 		mx-=mx%grid;
@@ -49,8 +52,25 @@ public class Editor {
 			tileID = Tile.spriteIndex.length-1;
 		}
 
-		if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
-			room.tiles.add(new Tile(mx,my,tileID,rot));
+		if (Gdx.input.justTouched()) {
+			boolean found = false;
+			for (Tile t : room.tiles) {
+				if (t.x == mx && t.y == my && t.id == tileID) {
+					found = true;
+				}
+			}
+			if (!found) {
+				room.tiles.add(new Tile(mx,my,tileID,rot));
+			}
+			
+		}
+		if (Gdx.input.isKeyJustPressed(Keys.DEL)) {
+			for (Tile t : room.tiles) {
+				if (t.x == mx && t.y == my) {
+					room.tiles.remove(t);
+					break;
+				}
+			}
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.E)) { // Export
 			try {
@@ -146,8 +166,16 @@ public class Editor {
 			tileID = 0;
 		}
 		
-		Gdx.graphics.setTitle("Tile Selected: "+tileID);
-		room.draw(batch);
+		Gdx.graphics.setTitle("Tile Selected: "+tileID+"  ("+Tile.getTextureFromID(tileID)+")");
 		
+		for (int x=0;x<winx;x+=64) {
+			for (int y=0;y<winy;y+=64) {
+				batch.draw(gridLines,x,y);
+			}
+		}
+		room.draw(batch);
+		for (Tile t : room.tiles) {
+			batch.draw(origin,t.x,t.y);
+		}
 	}
 }

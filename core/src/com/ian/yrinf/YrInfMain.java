@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 public class YrInfMain extends ApplicationAdapter {
 	SpriteBatch batch;
 	ShapeRenderer sr;
-	int year = -1000;
 	Editor editor;
 	@Override
 	public void create () {
